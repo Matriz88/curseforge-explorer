@@ -342,7 +342,7 @@ export const ModDetail = ({ modId }: ModDetailProps) => {
                     </td>
                     <td className="py-3 px-3 text-gray-300">
                       {file.gameVersions && file.gameVersions.length > 0 ? (
-                        <div className="whitespace-normal break-words">
+                        <div className="whitespace-normal wrap-break-word">
                           {file.gameVersions.join(', ')}
                         </div>
                       ) : (
