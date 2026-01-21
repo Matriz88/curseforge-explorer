@@ -21,13 +21,23 @@ export const ModFilesPage = ({
   initialPageSize,
   onParamsChange,
 }: ModFilesPageProps) => {
+  const effectivePageSize = initialPageSize ?? PAGINATION.DEFAULT_PAGE_SIZE;
+  const initialPage =
+    initialIndex !== undefined
+      ? Math.floor(initialIndex / effectivePageSize)
+      : PAGINATION.DEFAULT_PAGE_INDEX;
+
   const [internalState, setInternalState] = useState({
-    pageIndex: initialIndex ?? PAGINATION.DEFAULT_PAGE_INDEX,
-    pageSize: initialPageSize ?? PAGINATION.DEFAULT_PAGE_SIZE,
+    currentPage: initialPage,
+    pageSize: effectivePageSize,
   });
 
-  const pageIndex = initialIndex !== undefined ? initialIndex : internalState.pageIndex;
   const pageSize = initialPageSize !== undefined ? initialPageSize : internalState.pageSize;
+  const currentPage =
+    initialIndex !== undefined
+      ? Math.floor(initialIndex / pageSize)
+      : internalState.currentPage;
+  const apiIndex = currentPage * pageSize;
 
   const { data: mod, isLoading: isLoadingMod } = useCurseForgeMod(modId);
   const { data: game } = useCurseForgeGame(mod?.gameId ? String(mod.gameId) : '');
@@ -39,13 +49,14 @@ export const ModFilesPage = ({
     error: filesError,
   } = useModFiles({
     modId,
-    index: pageIndex,
+    index: apiIndex,
     pageSize,
   });
 
   const handlePageChange = (newPage: number) => {
-    setInternalState((prev) => ({ ...prev, pageIndex: newPage }));
-    onParamsChange({ index: newPage, pageSize });
+    setInternalState((prev) => ({ ...prev, currentPage: newPage }));
+    const apiIndexForRoute = newPage * pageSize;
+    onParamsChange({ index: apiIndexForRoute, pageSize });
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -53,7 +64,7 @@ export const ModFilesPage = ({
     setInternalState((prev) => ({
       ...prev,
       pageSize: newPageSize,
-      pageIndex: 0,
+      currentPage: 0,
     }));
     onParamsChange({ index: 0, pageSize: newPageSize });
   };
@@ -146,7 +157,7 @@ export const ModFilesPage = ({
           )}
           <ModFilesList files={filesData?.data ?? []} />
           <Pagination
-            currentPage={pageIndex}
+            currentPage={currentPage}
             totalPages={totalPages}
             pageSize={pageSize}
             onPageChange={handlePageChange}

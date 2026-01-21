@@ -1,9 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useSearchMods } from '../../hooks/useSearchMods';
 import { useCurseForgeGame } from '../../hooks/useCurseForgeGame';
 import { Breadcrumbs } from '../../components/ui/Breadcrumbs';
 import { ModsList } from '../mods/ModsList';
+import { Pagination } from '../../components/ui/Pagination';
 import { SortField } from '../../api/types';
+import { PAGINATION } from '../../config/constants';
 
 interface GameDetailProps {
   gameId: string;
@@ -29,8 +31,11 @@ export const GameDetail = ({ gameId }: GameDetailProps) => {
   const [activeSearchFilter, setActiveSearchFilter] = useState<string>('');
   const [sortField, setSortField] = useState<number>(SortField.TotalDownloads);
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
+  const [currentPage, setCurrentPage] = useState<number>(PAGINATION.DEFAULT_PAGE_INDEX);
+  const [pageSize, setPageSize] = useState<number>(PAGINATION.DEFAULT_PAGE_SIZE);
 
   const numericGameId = parseInt(gameId, 10);
+  const apiIndex = currentPage * pageSize;
 
   const {
     data: game,
@@ -49,6 +54,8 @@ export const GameDetail = ({ gameId }: GameDetailProps) => {
     searchFilter: activeSearchFilter,
     sortField,
     sortOrder,
+    index: apiIndex,
+    pageSize,
   });
 
   const handleSearch = () => {
@@ -60,11 +67,26 @@ export const GameDetail = ({ gameId }: GameDetailProps) => {
     setActiveSearchFilter('');
   };
 
+  const handlePageChange = (newPage: number) => {
+    setCurrentPage(newPage);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handlePageSizeChange = (newPageSize: number) => {
+    setPageSize(newPageSize);
+    setCurrentPage(PAGINATION.DEFAULT_PAGE_INDEX);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       handleSearch();
     }
   };
+
+  useEffect(() => {
+    setCurrentPage(PAGINATION.DEFAULT_PAGE_INDEX);
+  }, [activeSearchFilter, sortField, sortOrder]);
 
   if (isLoadingGame) {
     return (
@@ -104,6 +126,9 @@ export const GameDetail = ({ gameId }: GameDetailProps) => {
 
   const imageUrl = game.assets?.iconUrl ?? game.assets?.tileUrl ?? game.assets?.coverUrl;
   const coverUrl = game.assets?.coverUrl;
+
+  const totalCount = modsData?.pagination?.totalCount ?? 0;
+  const totalPages = Math.ceil(totalCount / pageSize);
 
   return (
     <>
@@ -245,6 +270,14 @@ export const GameDetail = ({ gameId }: GameDetailProps) => {
               </div>
             )}
             <ModsList mods={modsData?.data ?? []} />
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              pageSize={pageSize}
+              onPageChange={handlePageChange}
+              onPageSizeChange={handlePageSizeChange}
+              disabled={isLoadingMods}
+            />
           </>
         )}
       </div>

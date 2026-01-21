@@ -5,11 +5,13 @@ import { Pagination } from '../../components/ui/Pagination';
 import { PAGINATION } from '../../config/constants';
 
 export const GamesList = () => {
-  const [pageIndex, setPageIndex] = useState<number>(PAGINATION.DEFAULT_PAGE_INDEX);
+  const [currentPage, setCurrentPage] = useState<number>(PAGINATION.DEFAULT_PAGE_INDEX);
   const [pageSize, setPageSize] = useState<number>(PAGINATION.DEFAULT_PAGE_SIZE);
 
+  const apiIndex = currentPage * pageSize;
+
   const { data, isLoading, error, isError } = useCurseForgeGames({
-    index: pageIndex,
+    index: apiIndex,
     pageSize,
   });
 
@@ -17,13 +19,13 @@ export const GamesList = () => {
   const totalPages = Math.ceil(totalCount / pageSize);
 
   const handlePageChange = (newPage: number) => {
-    setPageIndex(newPage);
+    setCurrentPage(newPage);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handlePageSizeChange = (newPageSize: number) => {
     setPageSize(newPageSize);
-    setPageIndex(0);
+    setCurrentPage(0);
   };
 
   if (isLoading) {
@@ -80,7 +82,7 @@ export const GamesList = () => {
 
       {totalPages > 1 && (
         <Pagination
-          currentPage={pageIndex}
+          currentPage={currentPage}
           totalPages={totalPages}
           pageSize={pageSize}
           onPageChange={handlePageChange}
