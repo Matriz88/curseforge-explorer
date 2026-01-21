@@ -11,7 +11,7 @@ export default defineConfig({
     TanStackRouterVite(),
     tailwindcss(),
   ],
-  base: '/courseforge-explorer/',
+  base: '/curseforge-explorer/',
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),

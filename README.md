@@ -1,5 +1,7 @@
 # courseforge-explorer
 
+🌐 **[Live Demo](https://matriz88.github.io/curseforge-explorer/)** | 📖 [Documentation](#)
+
 > **Note**: This project is a test for testing AI agents and is almost entirely AI-generated.
 
 CourseForge Explorer is a tool for exploring the CourseForge API. It allows you to search for games, mods, and files.
