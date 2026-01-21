@@ -23,7 +23,7 @@ react({
   babel: {
     plugins: ['babel-plugin-react-compiler'],
   },
-})
+});
 ```
 
 **Best Practices**: Write code naturally - the compiler handles optimizations automatically. Only use manual memoization for specific edge cases where needed.

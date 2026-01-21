@@ -4,6 +4,7 @@ import { useCurseForgeMod } from '../../hooks/useCurseForgeMod';
 import { useCurseForgeGame } from '../../hooks/useCurseForgeGame';
 import { Breadcrumbs } from '../../components/ui/Breadcrumbs';
 import { formatFileSize, getFileStatusName, getReleaseTypeName } from '../../utils';
+import { PAGINATION } from '../../config/constants';
 
 interface ModDetailProps {
   modId: string;
@@ -99,47 +100,47 @@ export const ModDetail = ({ modId }: ModDetailProps) => {
               />
             )}
             <div className="flex-1">
-            <div className="flex items-start gap-3 mb-2">
-              <h1 className="text-3xl font-bold text-white">{mod.name}</h1>
-              {mod.isFeatured && (
-                <span className="px-2 py-1 bg-yellow-600 text-yellow-100 text-xs font-semibold rounded">
-                  Featured
-                </span>
-              )}
-            </div>
-            {mod.authors && mod.authors.length > 0 && (
-              <div className="mb-3">
-                <p className="text-sm text-gray-400">
-                  By:{' '}
-                  {mod.authors.map((author, idx) => (
-                    <span key={author.id ?? idx}>
-                      {author.url ? (
-                        <a
-                          href={author.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-blue-400 hover:text-blue-300 cursor-pointer"
-                        >
-                          {author.name}
-                        </a>
-                      ) : (
-                        <span>{author.name}</span>
-                      )}
-                      {idx < mod.authors!.length - 1 && ', '}
-                    </span>
-                  ))}
-                </p>
+              <div className="flex items-start gap-3 mb-2">
+                <h1 className="text-3xl font-bold text-white">{mod.name}</h1>
+                {mod.isFeatured && (
+                  <span className="px-2 py-1 bg-yellow-600 text-yellow-100 text-xs font-semibold rounded">
+                    Featured
+                  </span>
+                )}
               </div>
-            )}
-            <div className="flex flex-wrap gap-4 text-sm text-gray-400">
-              <span>Downloads: {mod.downloadCount?.toLocaleString() ?? '0'}</span>
-              {mod.rating !== undefined && <span>Rating: {mod.rating}</span>}
-              {mod.thumbsUpCount !== undefined && <span>Thumbs Up: {mod.thumbsUpCount}</span>}
-              {mod.gamePopularityRank !== undefined && (
-                <span>Popularity Rank: #{mod.gamePopularityRank}</span>
+              {mod.authors && mod.authors.length > 0 && (
+                <div className="mb-3">
+                  <p className="text-sm text-gray-400">
+                    By:{' '}
+                    {mod.authors.map((author, idx) => (
+                      <span key={author.id ?? idx}>
+                        {author.url ? (
+                          <a
+                            href={author.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-blue-400 hover:text-blue-300 cursor-pointer"
+                          >
+                            {author.name}
+                          </a>
+                        ) : (
+                          <span>{author.name}</span>
+                        )}
+                        {idx < mod.authors!.length - 1 && ', '}
+                      </span>
+                    ))}
+                  </p>
+                </div>
               )}
-              {mod.status !== undefined && <span>Status: {getFileStatusName(mod.status)}</span>}
-            </div>
+              <div className="flex flex-wrap gap-4 text-sm text-gray-400">
+                <span>Downloads: {mod.downloadCount?.toLocaleString() ?? '0'}</span>
+                {mod.rating !== undefined && <span>Rating: {mod.rating}</span>}
+                {mod.thumbsUpCount !== undefined && <span>Thumbs Up: {mod.thumbsUpCount}</span>}
+                {mod.gamePopularityRank !== undefined && (
+                  <span>Popularity Rank: #{mod.gamePopularityRank}</span>
+                )}
+                {mod.status !== undefined && <span>Status: {getFileStatusName(mod.status)}</span>}
+              </div>
             </div>
           </div>
           <Link
@@ -298,6 +299,10 @@ export const ModDetail = ({ modId }: ModDetailProps) => {
             <Link
               to="/mods/$modId/files"
               params={{ modId }}
+              search={{
+                index: PAGINATION.DEFAULT_PAGE_INDEX,
+                pageSize: PAGINATION.DEFAULT_PAGE_SIZE,
+              }}
               className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded font-medium transition-colors cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-900"
             >
               Explore All Files
