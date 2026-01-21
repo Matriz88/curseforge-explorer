@@ -1,0 +1,234 @@
+# CourseForge Explorer - AI Agent Instructions
+
+## Project Overview
+You are working on a Single Page Application (SPA) called "CourseForge Explorer" - a tool for browsing and exploring CourseForge content (games, mods, files). The application allows users to enter their CourseForge API key in a persistent header field, which is then used to authenticate all API requests.
+
+## Tech Stack (Latest Versions)
+- **Framework**: React (latest) with TypeScript
+- **Build Tool**: Vite (latest)
+- **Routing**: TanStack Router (latest) with file-based routing
+- **Data Fetching**: TanStack Query (latest)
+- **Styling**: Tailwind CSS (latest)
+- **Package Manager**: npm
+- **Deployment**: GitHub Pages
+
+## Core Principles
+
+### Language & Documentation
+- All code, comments, and documentation MUST be in English
+- Comments should only explain "why", not "what" - avoid self-explanatory comments
+- Only add comments for complex logic that requires explanation
+
+### Code Quality
+- Write highly maintainable, modular, and well-organized code
+- Minimize code duplication - extract reusable logic into utilities, hooks, or components
+- Duplicate code only when it significantly improves clarity or decouples unrelated domains
+- Use TypeScript with proper type definitions for all API responses and data structures
+- Follow latest React best practices (useEffectEvent, useActionState, useOptimistic where applicable)
+
+### React Best Practices
+- Use functional components and hooks exclusively
+- Prefer TanStack Query for data fetching over useEffect
+- Use useEffectEvent for stable event handlers when needed
+- Avoid useEffect for data fetching or derived state - use TanStack Query or event handlers
+- Leverage latest React features (useActionState, useOptimistic, useEffectEvent) where appropriate
+- Use proper error boundaries for error handling
+
+## Project Structure
+
+### File Organization
+```
+src/
+├── api/              # API client and CourseForge service layer
+│   ├── client.ts     # API client factory (accepts API key)
+│   └── courseforge.ts # CourseForge API service definitions
+├── components/
+│   ├── ui/           # Primitive reusable components (Button, Input, Card, Badge, etc.)
+│   └── layout/       # Layout components (Header with API Key input, Footer)
+├── features/         # Feature-based components (GamesList, ModDetails, FileBrowser, etc.)
+├── hooks/            # Custom hooks (useApiKey, useCourseForge, useDebounce, etc.)
+├── routes/           # TanStack Router file-based routes
+│   ├── __root.tsx    # Root layout route
+│   ├── index.lazy.tsx # Homepage route
+│   ├── games/        # Games routes
+│   ├── mods/         # Mods routes
+│   └── files/        # Files routes
+├── store/            # Context providers (ApiKeyContext, etc.)
+├── utils/            # Utility functions and helpers
+└── types/            # TypeScript type definitions
+```
+
+### Component Architecture
+- **Primitive Components** (`components/ui/`): Reusable, unstyled or minimally styled base components (Button, Input, Card, Badge, etc.)
+- **Layout Components** (`components/layout/`): Structural components (Header, Footer, Sidebar)
+- **Feature Components** (`features/`): Domain-specific components that combine primitives and business logic
+- **Route Components** (`routes/`): Page-level components that use TanStack Router's file-based routing
+
+## API Integration
+
+### API Key Management
+- API key MUST be stored in a React Context (`store/ApiKeyContext.tsx`)
+- Header component MUST contain a persistent, always-visible input field for the API key
+- API key should be accessible globally throughout the application
+- All CourseForge API calls MUST include the API key in request headers
+- Handle API errors gracefully (401 Unauthorized for invalid keys, network errors, etc.)
+
+### API Service Layer
+- Centralize all API calls in `src/api/` directory
+- Create a factory function for API client that accepts API key: `createApiClient(apiKey: string)`
+- Organize API services by resource type (games, mods, files)
+- Use TanStack Query for all remote data fetching - never use useEffect for API calls
+- Define TypeScript interfaces for all API request/response types in `src/types/`
+- Implement proper error handling with TanStack Query's error states
+
+### CourseForge API Integration
+- Base URL: Configure in API client (check CourseForge API documentation)
+- Authentication: Include API key in headers (format: `x-api-key` or `Authorization` as per API docs)
+- Endpoints: Organize by resource (games, mods, files)
+- Display all available information from API responses (id, download URLs, metadata, etc.)
+
+## Routing (TanStack Router)
+
+### File-Based Routing
+- Use TanStack Router's file-based routing system
+- Routes are defined in `src/routes/` directory
+- Root route: `routes/__root.tsx` - contains the main layout wrapper
+- Homepage: `routes/index.lazy.tsx` - lazy-loaded home route
+- Nested routes: Create subdirectories (e.g., `routes/games/index.tsx`, `routes/games/$gameId.tsx`)
+- Use route params with `$` prefix (e.g., `$gameId.tsx`, `$modId.tsx`)
+
+### GitHub Pages Configuration
+- Configure base path in `vite.config.ts`: `base: '/courseforge-explorer/'` (or repo name)
+- Ensure all routes work correctly with the base path
+- Handle client-side routing properly for GitHub Pages (use hash routing if needed, or configure 404.html)
+
+## Styling (Tailwind CSS v4)
+
+### Tailwind CSS v4 - CSS-First Approach (2026 Best Practices)
+- **DO NOT create `tailwind.config.js`** - Configuration happens directly in CSS using `@theme` directive
+- **DO NOT create `postcss.config.js`** - Not needed with Tailwind v4 + Vite plugin
+- Use `@tailwindcss/vite` plugin in `vite.config.ts` (NOT postcss/autoprefixer)
+- Configure theme, colors, fonts, and breakpoints directly in `src/index.css` using `@theme` block
+- Use `@import "tailwindcss";` at the top of the main CSS file
+
+### Styling Rules
+- Use Tailwind CSS utility classes for all styling
+- Follow mobile-first responsive design approach
+- Create reusable component variants using Tailwind's class composition
+- Avoid inline styles - use Tailwind classes or component variants
+- All theme customizations must be in the CSS file using `@theme`, never in a JavaScript config file
+- **Cursor Pointer**: ALL clickable elements MUST have `cursor-pointer` class (or `cursor: pointer` in CSS) - this includes buttons, links, clickable cards, accordion headers, interactive titles, and any element with onClick handlers. Users must be able to visually identify clickable elements through the pointer cursor
+
+## State Management
+
+### Data Fetching
+- Use TanStack Query for ALL remote data fetching
+- Never use useEffect for API calls
+- Configure TanStack Query with proper defaults (staleTime, cacheTime, etc.)
+- Use query keys that include relevant dependencies (API key, filters, etc.)
+
+### Local State
+- Use React useState for simple component-local state
+- Use React Context for global state (API key, theme, etc.)
+- Consider Zustand or Jotai only if Context becomes insufficient
+- Keep state as local as possible - lift state up only when necessary
+
+## Development Workflow
+
+### Package Management
+- Always use npm
+- Install dependencies with: `npm install <package>`
+- Use latest versions of all packages unless explicitly specified otherwise
+
+### Code Organization
+- Group related files together (co-location)
+- Keep files focused and single-purpose
+- Extract reusable logic into custom hooks
+- Extract utility functions into `utils/` directory
+- Use barrel exports (`index.ts`) for cleaner imports
+
+### TypeScript
+- Define types for all API responses
+- Use interfaces for object shapes, types for unions/primitives
+- Avoid `any` - use `unknown` if type is truly unknown
+- Use proper generic types for reusable components and hooks
+
+## Error Handling
+
+### API Errors
+- Handle 401 Unauthorized (invalid API key) with user-friendly message
+- Handle network errors gracefully
+- Show loading states during API calls
+- Use TanStack Query's built-in error handling and retry logic
+
+### User Experience
+- Provide clear error messages to users
+- Show loading indicators for async operations
+- Implement proper error boundaries for React error handling
+- **Clickable Elements**: All interactive elements (buttons, links, clickable cards, accordion headers, interactive titles, etc.) MUST use `cursor-pointer` class to indicate they are clickable - never use the default arrow cursor for interactive elements
+
+## Deployment (GitHub Pages)
+
+### Build Configuration
+- Configure Vite base path for GitHub Pages
+- Build output goes to `dist/` directory
+- Ensure all assets are properly referenced with base path
+- Test routing works correctly after deployment
+
+### GitHub Actions (if applicable)
+- Create workflow to build and deploy to `gh-pages` branch
+- Build command: `npm run build`
+- Deploy `dist/` folder contents to `gh-pages` branch
+
+## Code Examples & Patterns
+
+### API Client Pattern
+```typescript
+// src/api/client.ts
+export const createApiClient = (apiKey: string) => {
+  return axios.create({
+    baseURL: 'https://api.courseforge.com/v1',
+    headers: {
+      'x-api-key': apiKey,
+      'Content-Type': 'application/json',
+    },
+  });
+};
+```
+
+### TanStack Query Pattern
+```typescript
+// Use TanStack Query for all data fetching
+const { data, isLoading, error } = useQuery({
+  queryKey: ['games', apiKey],
+  queryFn: () => courseforgeApi.getGames(apiKey),
+  enabled: !!apiKey, // Only fetch when API key is available
+});
+```
+
+### useEffectEvent Pattern (Latest React)
+```typescript
+// Use useEffectEvent for stable event handlers
+const onLog = useEffectEvent((details) => {
+  console.log('Event:', details);
+});
+
+useEffect(() => {
+  // subscription logic
+  onLog({ timestamp: Date.now() });
+}, [dependency]);
+```
+
+## Important Reminders
+
+1. **API Key**: Always check if API key exists before making API calls
+2. **Error Handling**: Never leave error states unhandled
+3. **Type Safety**: Define types for all API responses
+4. **Code Duplication**: Extract reusable patterns into hooks/components
+5. **Comments**: Only comment when necessary - code should be self-documenting
+6. **English Only**: All code, comments, and documentation in English
+7. **Latest Versions**: Use latest stable versions of all dependencies
+8. **File-Based Routing**: Follow TanStack Router's file-based routing conventions
+9. **Primitive Components**: Build reusable UI primitives before feature components
+10. **Cursor Pointer**: Always add `cursor-pointer` to all clickable elements (buttons, links, cards, accordion headers, etc.) - users must clearly see what is interactive
+11. **Maintainability**: Prioritize clean, organized, maintainable code over clever solutions
