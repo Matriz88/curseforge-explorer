@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useSearchMods } from '../../hooks/useSearchMods';
-import { useFeaturedMods } from '../../hooks/useFeaturedMods';
 import { useCurseForgeGame } from '../../hooks/useCurseForgeGame';
 import { Breadcrumbs } from '../../components/ui/Breadcrumbs';
 import { ModsList } from '../mods/ModsList';
@@ -27,12 +26,11 @@ const SORT_FIELD_OPTIONS = [
 
 export const GameDetail = ({ gameId }: GameDetailProps) => {
   const [searchFilter, setSearchFilter] = useState('');
-  const [activeSearchFilter, setActiveSearchFilter] = useState<string | undefined>(undefined);
-  const [sortField, setSortField] = useState<number>(SortField.Featured);
+  const [activeSearchFilter, setActiveSearchFilter] = useState<string>('');
+  const [sortField, setSortField] = useState<number>(SortField.TotalDownloads);
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
 
   const numericGameId = parseInt(gameId, 10);
-  const hasActiveSearch = activeSearchFilter !== undefined && activeSearchFilter.trim() !== '';
 
   const {
     data: game,
@@ -40,16 +38,6 @@ export const GameDetail = ({ gameId }: GameDetailProps) => {
     isError: isErrorGame,
     error: gameError,
   } = useCurseForgeGame(gameId);
-
-  const {
-    data: featuredMods,
-    isLoading: isLoadingFeaturedMods,
-    isError: isErrorFeaturedMods,
-    error: featuredModsError,
-  } = useFeaturedMods({
-    gameId: numericGameId,
-    enabled: !hasActiveSearch,
-  });
 
   const {
     data: modsData,
@@ -64,12 +52,12 @@ export const GameDetail = ({ gameId }: GameDetailProps) => {
   });
 
   const handleSearch = () => {
-    setActiveSearchFilter(searchFilter.trim() || undefined);
+    setActiveSearchFilter(searchFilter.trim());
   };
 
   const handleClearSearch = () => {
     setSearchFilter('');
-    setActiveSearchFilter(undefined);
+    setActiveSearchFilter('');
   };
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -227,69 +215,36 @@ export const GameDetail = ({ gameId }: GameDetailProps) => {
           </div>
         </div>
 
-        {hasActiveSearch ? (
-          <>
-            {isLoadingMods ? (
-              <div className="flex items-center justify-center min-h-[400px]">
-                <div className="text-center">
-                  <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mb-4"></div>
-                  <p className="text-gray-400">Searching mods...</p>
-                </div>
-              </div>
-            ) : isErrorMods ? (
-              <div className="bg-red-950/50 border border-red-800/50 rounded-lg p-6">
-                <h2 className="text-lg font-semibold text-red-400 mb-2">Error searching mods</h2>
-                <p className="text-red-300">
-                  {modsError instanceof Error ? modsError.message : 'An unknown error occurred'}
-                </p>
-              </div>
-            ) : modsData && modsData.data.length === 0 ? (
-              <div className="text-center py-12">
-                <p className="text-gray-400 text-lg">No mods found matching your search</p>
-              </div>
-            ) : (
-              <>
-                {modsData && modsData.pagination && (
-                  <div className="mb-4 text-sm text-gray-400">
-                    Showing {modsData.data.length} of {modsData.pagination.totalCount} mods
-                  </div>
-                )}
-                <ModsList mods={modsData?.data ?? []} />
-              </>
-            )}
-          </>
+        {isLoadingMods ? (
+          <div className="flex items-center justify-center min-h-[400px]">
+            <div className="text-center">
+              <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mb-4"></div>
+              <p className="text-gray-400">Loading mods...</p>
+            </div>
+          </div>
+        ) : isErrorMods ? (
+          <div className="bg-red-950/50 border border-red-800/50 rounded-lg p-6">
+            <h2 className="text-lg font-semibold text-red-400 mb-2">Error loading mods</h2>
+            <p className="text-red-300">
+              {modsError instanceof Error ? modsError.message : 'An unknown error occurred'}
+            </p>
+          </div>
+        ) : modsData && modsData.data.length === 0 ? (
+          <div className="text-center py-12">
+            <p className="text-gray-400 text-lg">
+              {activeSearchFilter.trim() !== ''
+                ? 'No mods found matching your search'
+                : 'No mods available'}
+            </p>
+          </div>
         ) : (
           <>
-            {isLoadingFeaturedMods ? (
-              <div className="flex items-center justify-center min-h-[400px]">
-                <div className="text-center">
-                  <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mb-4"></div>
-                  <p className="text-gray-400">Loading featured/popular mods...</p>
-                </div>
+            {modsData && modsData.pagination && (
+              <div className="mb-4 text-sm text-gray-400">
+                Showing {modsData.data.length} of {modsData.pagination.totalCount} mods
               </div>
-            ) : isErrorFeaturedMods ? (
-              <div className="bg-red-950/50 border border-red-800/50 rounded-lg p-6">
-                <h2 className="text-lg font-semibold text-red-400 mb-2">
-                  Error loading featured/popular mods
-                </h2>
-                <p className="text-red-300">
-                  {featuredModsError instanceof Error
-                    ? featuredModsError.message
-                    : 'An unknown error occurred'}
-                </p>
-              </div>
-            ) : featuredMods && featuredMods.length === 0 ? (
-              <div className="text-center py-12">
-                <p className="text-gray-400 text-lg">No featured/popular mods available</p>
-              </div>
-            ) : (
-              <>
-                <div className="mb-4 text-sm text-gray-400">
-                  Showing {featuredMods?.length ?? 0} featured/popular mods
-                </div>
-                <ModsList mods={featuredMods ?? []} />
-              </>
             )}
+            <ModsList mods={modsData?.data ?? []} />
           </>
         )}
       </div>
