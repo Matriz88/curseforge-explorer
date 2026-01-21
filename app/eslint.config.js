@@ -9,7 +9,7 @@ import tanstackConfig from '@tanstack/eslint-plugin-router';
 import pluginQuery from '@tanstack/eslint-plugin-query';
 
 export default defineConfig([
-  globalIgnores(['dist']),
+  globalIgnores(['dist', 'node_modules', '.vite', 'routeTree.gen.ts', '**/*.config.js']),
   {
     files: ['**/*.{ts,tsx}'],
     extends: [
