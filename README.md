@@ -51,6 +51,17 @@ Things worth observing:
 - does it produce coherent code or isolated patches
 - does it introduce regressions or break internal APIs
 
+## Tech Stack
+
+The project uses modern React development tools:
+
+- **React 19** with TypeScript
+- **React Compiler** - Automatic memoization and optimization (enabled via `babel-plugin-react-compiler`)
+- **Vite** - Fast build tool and dev server
+- **TanStack Router** - File-based routing
+- **TanStack Query** - Data fetching and caching
+- **Tailwind CSS v4** - Utility-first CSS framework
+
 ## Local setup
 
 Prerequisites:

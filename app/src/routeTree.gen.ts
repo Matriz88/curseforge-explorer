@@ -13,6 +13,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as ModsModIdRouteImport } from './routes/mods/$modId'
 import { Route as GamesGameIdRouteImport } from './routes/games/$gameId'
+import { Route as ModsModIdFilesRouteImport } from './routes/mods/$modId/files'
 
 const IndexLazyRouteImport = createFileRoute('/')()
 
@@ -31,35 +32,48 @@ const GamesGameIdRoute = GamesGameIdRouteImport.update({
   path: '/games/$gameId',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ModsModIdFilesRoute = ModsModIdFilesRouteImport.update({
+  id: '/files',
+  path: '/files',
+  getParentRoute: () => ModsModIdRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexLazyRoute
   '/games/$gameId': typeof GamesGameIdRoute
-  '/mods/$modId': typeof ModsModIdRoute
+  '/mods/$modId': typeof ModsModIdRouteWithChildren
+  '/mods/$modId/files': typeof ModsModIdFilesRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexLazyRoute
   '/games/$gameId': typeof GamesGameIdRoute
-  '/mods/$modId': typeof ModsModIdRoute
+  '/mods/$modId': typeof ModsModIdRouteWithChildren
+  '/mods/$modId/files': typeof ModsModIdFilesRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexLazyRoute
   '/games/$gameId': typeof GamesGameIdRoute
-  '/mods/$modId': typeof ModsModIdRoute
+  '/mods/$modId': typeof ModsModIdRouteWithChildren
+  '/mods/$modId/files': typeof ModsModIdFilesRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/games/$gameId' | '/mods/$modId'
+  fullPaths: '/' | '/games/$gameId' | '/mods/$modId' | '/mods/$modId/files'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/games/$gameId' | '/mods/$modId'
-  id: '__root__' | '/' | '/games/$gameId' | '/mods/$modId'
+  to: '/' | '/games/$gameId' | '/mods/$modId' | '/mods/$modId/files'
+  id:
+    | '__root__'
+    | '/'
+    | '/games/$gameId'
+    | '/mods/$modId'
+    | '/mods/$modId/files'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexLazyRoute: typeof IndexLazyRoute
   GamesGameIdRoute: typeof GamesGameIdRoute
-  ModsModIdRoute: typeof ModsModIdRoute
+  ModsModIdRoute: typeof ModsModIdRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -85,13 +99,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GamesGameIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/mods/$modId/files': {
+      id: '/mods/$modId/files'
+      path: '/files'
+      fullPath: '/mods/$modId/files'
+      preLoaderRoute: typeof ModsModIdFilesRouteImport
+      parentRoute: typeof ModsModIdRoute
+    }
   }
 }
+
+interface ModsModIdRouteChildren {
+  ModsModIdFilesRoute: typeof ModsModIdFilesRoute
+}
+
+const ModsModIdRouteChildren: ModsModIdRouteChildren = {
+  ModsModIdFilesRoute: ModsModIdFilesRoute,
+}
+
+const ModsModIdRouteWithChildren = ModsModIdRoute._addFileChildren(
+  ModsModIdRouteChildren,
+)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexLazyRoute: IndexLazyRoute,
   GamesGameIdRoute: GamesGameIdRoute,
-  ModsModIdRoute: ModsModIdRoute,
+  ModsModIdRoute: ModsModIdRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

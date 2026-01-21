@@ -1,56 +1,17 @@
 import { useState } from 'react';
 import { Link } from '@tanstack/react-router';
 import { useCurseForgeMod } from '../../hooks/useCurseForgeMod';
+import { useCurseForgeGame } from '../../hooks/useCurseForgeGame';
+import { Breadcrumbs } from '../../components/ui/Breadcrumbs';
+import { formatFileSize, getFileStatusName, getReleaseTypeName } from '../../utils';
 
 interface ModDetailProps {
   modId: string;
 }
 
-const formatFileSize = (bytes?: number): string => {
-  if (!bytes) return 'Unknown';
-  const units = ['B', 'KB', 'MB', 'GB'];
-  let size = bytes;
-  let unitIndex = 0;
-  while (size >= 1024 && unitIndex < units.length - 1) {
-    size /= 1024;
-    unitIndex++;
-  }
-  return `${size.toFixed(2)} ${units[unitIndex]}`;
-};
-
 const formatDate = (dateString?: string): string => {
   if (!dateString) return 'Unknown';
   return new Date(dateString).toLocaleString();
-};
-
-const getReleaseTypeName = (type?: number): string => {
-  const types: Record<number, string> = {
-    1: 'Release',
-    2: 'Beta',
-    3: 'Alpha',
-  };
-  return types[type ?? 1] ?? 'Unknown';
-};
-
-const getFileStatusName = (status?: number): string => {
-  const statuses: Record<number, string> = {
-    1: 'Processing',
-    2: 'ChangesRequired',
-    3: 'UnderReview',
-    4: 'Approved',
-    5: 'Rejected',
-    6: 'MalwareDetected',
-    7: 'Deleted',
-    8: 'Archived',
-    9: 'Testing',
-    10: 'Released',
-    11: 'ReadyForReview',
-    12: 'Deprecated',
-    13: 'Baking',
-    14: 'AwaitingPublishing',
-    15: 'FailedPublishing',
-  };
-  return statuses[status ?? 1] ?? 'Unknown';
 };
 
 export const ModDetail = ({ modId }: ModDetailProps) => {
@@ -62,6 +23,7 @@ export const ModDetail = ({ modId }: ModDetailProps) => {
   });
 
   const { data: mod, isLoading, isError, error } = useCurseForgeMod(modId);
+  const { data: game } = useCurseForgeGame(mod?.gameId ? String(mod.gameId) : '');
 
   const toggleSection = (section: string) => {
     setExpandedSections((prev) => ({
@@ -110,56 +72,33 @@ export const ModDetail = ({ modId }: ModDetailProps) => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      {/* Breadcrumbs */}
-      <nav className="mb-6" aria-label="Breadcrumb">
-        <ol className="flex items-center space-x-2 text-sm">
-          <li>
-            <Link
-              to="/"
-              className="text-blue-400 hover:text-blue-300 cursor-pointer transition-colors"
-            >
-              Home
-            </Link>
-          </li>
-          <li>
-            <span className="text-gray-500 mx-2" aria-hidden="true">
-              ›
-            </span>
-          </li>
-          <li>
-            <Link
-              to="/games/$gameId"
-              params={{ gameId: String(mod.gameId) }}
-              className="text-blue-400 hover:text-blue-300 cursor-pointer transition-colors"
-            >
-              Search Mod
-            </Link>
-          </li>
-          <li>
-            <span className="text-gray-500 mx-2" aria-hidden="true">
-              ›
-            </span>
-          </li>
-          <li>
-            <span className="text-gray-300">{mod.name}</span>
-          </li>
-        </ol>
-      </nav>
+      <Breadcrumbs
+        items={[
+          { label: 'Home', to: '/' },
+          {
+            label: game?.name || 'Loading...',
+            to: '/games/$gameId',
+            params: { gameId: String(mod.gameId) },
+          },
+          { label: mod.name },
+        ]}
+      />
 
       {/* Header Section */}
       <div className="mb-8">
-        <div className="flex items-start gap-6 mb-6">
-          {logoUrl && (
-            <img
-              src={logoUrl}
-              alt={mod.name}
-              className="w-32 h-32 object-cover rounded shrink-0 border border-gray-800"
-              onError={(e) => {
-                e.currentTarget.style.display = 'none';
-              }}
-            />
-          )}
-          <div className="flex-1">
+        <div className="flex items-start justify-between gap-6 mb-6">
+          <div className="flex items-start gap-6 flex-1">
+            {logoUrl && (
+              <img
+                src={logoUrl}
+                alt={mod.name}
+                className="w-32 h-32 object-cover rounded shrink-0 border border-gray-800"
+                onError={(e) => {
+                  e.currentTarget.style.display = 'none';
+                }}
+              />
+            )}
+            <div className="flex-1">
             <div className="flex items-start gap-3 mb-2">
               <h1 className="text-3xl font-bold text-white">{mod.name}</h1>
               {mod.isFeatured && (
@@ -201,7 +140,15 @@ export const ModDetail = ({ modId }: ModDetailProps) => {
               )}
               {mod.status !== undefined && <span>Status: {getFileStatusName(mod.status)}</span>}
             </div>
+            </div>
           </div>
+          <Link
+            to="/games/$gameId"
+            params={{ gameId: String(mod.gameId) }}
+            className="px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white rounded font-medium transition-colors cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            Back to Game Details
+          </Link>
         </div>
       </div>
 
@@ -346,7 +293,16 @@ export const ModDetail = ({ modId }: ModDetailProps) => {
       {/* Latest Files Section */}
       {mod.latestFiles && mod.latestFiles.length > 0 && (
         <div className="bg-gray-900 rounded-lg p-6 border border-gray-800 mb-6">
-          <h2 className="text-xl font-semibold text-white mb-4">Latest Files</h2>
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-xl font-semibold text-white">Latest Files</h2>
+            <Link
+              to="/mods/$modId/files"
+              params={{ modId }}
+              className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded font-medium transition-colors cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-900"
+            >
+              Explore All Files
+            </Link>
+          </div>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
@@ -381,11 +337,8 @@ export const ModDetail = ({ modId }: ModDetailProps) => {
                     </td>
                     <td className="py-3 px-3 text-gray-300">
                       {file.gameVersions && file.gameVersions.length > 0 ? (
-                        <div className="max-w-xs">
-                          <div className="truncate" title={file.gameVersions.join(', ')}>
-                            {file.gameVersions.slice(0, 2).join(', ')}
-                            {file.gameVersions.length > 2 && ` +${file.gameVersions.length - 2}`}
-                          </div>
+                        <div className="whitespace-normal break-words">
+                          {file.gameVersions.join(', ')}
                         </div>
                       ) : (
                         'N/A'
@@ -537,6 +490,20 @@ export const ModDetail = ({ modId }: ModDetailProps) => {
               <span className="text-gray-300">Is Available:</span>{' '}
               <span className="text-white font-medium">{mod.isAvailable ? 'Yes' : 'No'}</span>
             </div>
+            {mod.isFeatured !== undefined && (
+              <div>
+                <span className="text-gray-300">Is Featured:</span>{' '}
+                <span className="text-white font-medium">{mod.isFeatured ? 'Yes' : 'No'}</span>
+              </div>
+            )}
+            {mod.hasCommentsEnabled !== undefined && (
+              <div>
+                <span className="text-gray-300">Has Comments Enabled:</span>{' '}
+                <span className="text-white font-medium">
+                  {mod.hasCommentsEnabled ? 'Yes' : 'No'}
+                </span>
+              </div>
+            )}
             {mod.latestFiles && (
               <div className="col-span-full">
                 <h3 className="text-sm font-semibold text-gray-200 mb-3">File Details</h3>

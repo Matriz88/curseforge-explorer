@@ -39,7 +39,12 @@ export const useSearchMods = (params: UseSearchModsParams) => {
         index,
         pageSize,
       }),
-    enabled: !!apiKey && apiKey.length > 0 && !!params.gameId,
+    enabled:
+      !!apiKey &&
+      apiKey.length > 0 &&
+      !!params.gameId &&
+      params.searchFilter !== undefined &&
+      params.searchFilter.trim() !== '',
     staleTime: 1000 * 60 * 5, // 5 minutes
     retry: 1,
   });

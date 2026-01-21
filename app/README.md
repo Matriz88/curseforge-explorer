@@ -9,7 +9,26 @@ Currently, two official plugins are available:
 
 ## React Compiler
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+The React Compiler is **enabled** in this project via `babel-plugin-react-compiler`. It automatically optimizes React components by:
+
+- Automatically memoizing components and values
+- Optimizing re-renders
+- Stabilizing event handlers
+- Eliminating the need for manual `useMemo`, `useCallback`, and `React.memo` in most cases
+
+**Configuration**: The compiler is configured in `vite.config.ts`:
+
+```typescript
+react({
+  babel: {
+    plugins: ['babel-plugin-react-compiler'],
+  },
+})
+```
+
+**Best Practices**: Write code naturally - the compiler handles optimizations automatically. Only use manual memoization for specific edge cases where needed.
+
+For more information, see the [React Compiler documentation](https://react.dev/learn/react-compiler).
 
 ## Expanding the ESLint configuration
 

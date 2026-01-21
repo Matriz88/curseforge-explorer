@@ -1,10 +1,11 @@
-import { createFileRoute } from '@tanstack/react-router';
+import { createFileRoute, Outlet, useLocation } from '@tanstack/react-router';
 import { useApiKey } from '../../hooks/useApiKey';
 import { ModDetail } from '../../features/mods/ModDetail';
 
 function ModDetailPage() {
   const { apiKey } = useApiKey();
   const { modId } = Route.useParams();
+  const location = useLocation();
 
   if (!apiKey) {
     return (
@@ -17,6 +18,13 @@ function ModDetailPage() {
         </div>
       </div>
     );
+  }
+
+  // Check if we're on a child route (like /files)
+  const isChildRoute = location.pathname.includes('/files');
+
+  if (isChildRoute) {
+    return <Outlet />;
   }
 
   return <ModDetail modId={modId} />;

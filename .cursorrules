@@ -9,6 +9,7 @@ You are working on a Single Page Application (SPA) called "CurseForge Explorer" 
 - **Routing**: TanStack Router (latest) with file-based routing
 - **Data Fetching**: TanStack Query (latest)
 - **Styling**: Tailwind CSS (latest)
+- **Optimization**: React Compiler (automatic memoization and optimization)
 - **Package Manager**: npm
 - **Deployment**: GitHub Pages
 
@@ -33,6 +34,19 @@ You are working on a Single Page Application (SPA) called "CurseForge Explorer" 
 - Avoid useEffect for data fetching or derived state - use TanStack Query or event handlers
 - Leverage latest React features (useActionState, useOptimistic, useEffectEvent) where appropriate
 - Use proper error boundaries for error handling
+
+### React Compiler Best Practices
+- **React Compiler is enabled** via `babel-plugin-react-compiler` in `vite.config.ts`
+- **Write code naturally** - React Compiler automatically handles memoization and optimization
+- **DO NOT use manual memoization** (`useMemo`, `useCallback`, `React.memo`) unless absolutely necessary for specific edge cases
+- The compiler automatically optimizes:
+  - Component re-renders (memoization)
+  - Value memoization (computed values)
+  - Event handler stability
+- **Trust the compiler** - it analyzes your code and applies optimizations automatically
+- **Keep code readable** - prioritize clarity over manual optimization patterns
+- **Use `useEffect` when needed** - React Compiler doesn't replace `useEffect` for side effects (localStorage, timers, subscriptions, etc.)
+- The compiler works best with naturally written React code - avoid premature optimization patterns
 
 ## Project Structure
 
@@ -132,6 +146,7 @@ src/
 - Use React Context for global state (API key, theme, etc.)
 - Consider Zustand or Jotai only if Context becomes insufficient
 - Keep state as local as possible - lift state up only when necessary
+- React Compiler automatically optimizes state updates and re-renders - no manual memoization needed
 
 ## Development Workflow
 

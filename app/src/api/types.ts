@@ -149,6 +149,7 @@ export interface ModDetail {
   status?: number;
   downloadCount?: number;
   isFeatured?: boolean;
+  hasCommentsEnabled?: boolean;
   primaryCategoryId?: number;
   categories?: ModCategory[];
   classId?: number;
@@ -219,4 +220,39 @@ export interface File {
   modId?: string;
   gameId?: string;
   [key: string]: unknown;
+}
+
+export interface FeaturedModsResponse {
+  data: {
+    featured: Mod[];
+    popular: Mod[];
+  };
+}
+
+export interface GameVersionType {
+  type: number;
+  versions: string[];
+}
+
+export interface GameVersionsResponse {
+  data: GameVersionType[];
+}
+
+export interface GameVersionTypeInfo {
+  id: number;
+  gameId: number;
+  name: string;
+  slug: string;
+  isSyncable?: boolean;
+  status?: number;
+}
+
+export interface GameVersionTypesResponse {
+  data: GameVersionTypeInfo[];
+}
+
+export interface GetModFilesParams {
+  modId: string;
+  index?: number;
+  pageSize?: number;
 }
