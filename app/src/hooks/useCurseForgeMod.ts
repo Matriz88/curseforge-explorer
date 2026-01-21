@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { useApiKey } from './useApiKey';
-import { courseforgeApi } from '../api/courseforge';
+import { curseforgeApi } from '../api/curseforge';
 import type { ModDetail } from '../api/types';
 
 export const useCurseForgeMod = (modId: string) => {
@@ -8,7 +8,7 @@ export const useCurseForgeMod = (modId: string) => {
 
   return useQuery<ModDetail, Error>({
     queryKey: ['mod', apiKey, modId],
-    queryFn: () => courseforgeApi.getMod(apiKey, modId),
+    queryFn: () => curseforgeApi.getMod(apiKey, modId),
     enabled: !!apiKey && apiKey.length > 0 && !!modId,
     staleTime: 1000 * 60 * 5, // 5 minutes
     retry: 1,

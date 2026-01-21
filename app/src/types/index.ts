@@ -1,2 +1,2 @@
-export * from './courseforge';
+export * from './curseforge';
 export * from './common';

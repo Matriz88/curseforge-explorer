@@ -1,12 +1,12 @@
-# CourseForge Explorer - Additional Context for AI Agents
+# CurseForge Explorer - Additional Context for AI Agents
 
 This document provides additional context, architectural decisions, and reference patterns for AI agents working on this project.
 
 ## Project Purpose
 
-CourseForge Explorer is a browser tool that allows users to:
-1. Enter their CourseForge API key in a persistent header field
-2. Navigate and explore CourseForge content (games, mods, files)
+CurseForge Explorer is a browser tool that allows users to:
+1. Enter their CurseForge API key in a persistent header field
+2. Navigate and explore CurseForge content (games, mods, files)
 3. View all available information from the API (IDs, download URLs, metadata, etc.)
 4. Browse content in an organized, user-friendly interface
 
@@ -77,10 +77,10 @@ graph TD
 
 ### API Service Pattern
 ```typescript
-// src/api/courseforge.ts
+// src/api/curseforge.ts
 import { createApiClient } from './client';
 
-export const courseforgeApi = {
+export const curseforgeApi = {
   getGames: async (apiKey: string) => {
     const client = createApiClient(apiKey);
     const response = await client.get('/games');
@@ -99,17 +99,17 @@ export const courseforgeApi = {
 
 ### Custom Hook Pattern
 ```typescript
-// src/hooks/useCourseForgeGames.ts
+// src/hooks/useCurseForgeGames.ts
 import { useQuery } from '@tanstack/react-query';
 import { useApiKey } from './useApiKey';
-import { courseforgeApi } from '../api/courseforge';
+import { curseforgeApi } from '../api/curseforge';
 
-export const useCourseForgeGames = () => {
+export const useCurseForgeGames = () => {
   const apiKey = useApiKey();
   
   return useQuery({
     queryKey: ['games', apiKey],
-    queryFn: () => courseforgeApi.getGames(apiKey),
+    queryFn: () => curseforgeApi.getGames(apiKey),
     enabled: !!apiKey,
   });
 };
@@ -159,7 +159,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 
 ### API Layer (`src/api/`)
 - **client.ts**: Factory function that creates configured API client with API key
-- **courseforge.ts**: All CourseForge API endpoint definitions
+- **curseforge.ts**: All CurseForge API endpoint definitions
 - **types.ts**: TypeScript interfaces for API requests/responses
 
 ### Components (`src/components/`)
@@ -173,7 +173,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 
 ### Hooks (`src/hooks/`)
 - **useApiKey.ts**: Hook to access API key from context
-- **useCourseForge*.ts**: Custom hooks for specific API queries
+- **useCurseForge*.ts**: Custom hooks for specific API queries
 - **useDebounce.ts**: Utility hook for debouncing (e.g., search inputs)
 
 ### Routes (`src/routes/`)
@@ -194,11 +194,11 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 2. Create feature component in `src/features/` if needed
 3. Use existing UI primitives from `components/ui/`
 4. Create custom hook in `src/hooks/` for data fetching
-5. Add API service method in `src/api/courseforge.ts` if new endpoint needed
+5. Add API service method in `src/api/curseforge.ts` if new endpoint needed
 
 ### Adding a New API Endpoint
-1. Define TypeScript types in `src/types/courseforge.ts`
-2. Add service method in `src/api/courseforge.ts`
+1. Define TypeScript types in `src/types/curseforge.ts`
+2. Add service method in `src/api/curseforge.ts`
 3. Create custom hook in `src/hooks/` that uses TanStack Query
 4. Use the hook in components that need the data
 

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import type { ReactNode } from 'react';
 import { ApiKeyContext } from './ApiKeyContext';
 
-const STORAGE_KEY = 'courseforge-api-key';
+const STORAGE_KEY = 'curseforge-api-key';
 
 interface ApiKeyProviderProps {
   children: ReactNode;

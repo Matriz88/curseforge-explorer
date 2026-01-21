@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { useApiKey } from './useApiKey';
-import { courseforgeApi } from '../api/courseforge';
+import { curseforgeApi } from '../api/curseforge';
 import type { PaginatedResponse, Mod } from '../api/types';
 import { API } from '../config/constants';
 
@@ -20,7 +20,7 @@ export const useSearchMods = (params: UseSearchModsParams) => {
 
   return useQuery<PaginatedResponse<Mod>, Error>({
     queryKey: ['mods', 'search', apiKey, params.gameId, params.searchFilter, params.sortField, params.sortOrder],
-    queryFn: () => courseforgeApi.searchMods(apiKey, {
+    queryFn: () => curseforgeApi.searchMods(apiKey, {
       gameId: params.gameId,
       searchFilter: params.searchFilter,
       sortField: params.sortField,

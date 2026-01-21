@@ -1,7 +1,7 @@
-# CourseForge Explorer - AI Agent Instructions
+# CurseForge Explorer - AI Agent Instructions
 
 ## Project Overview
-You are working on a Single Page Application (SPA) called "CourseForge Explorer" - a tool for browsing and exploring CourseForge content (games, mods, files). The application allows users to enter their CourseForge API key in a persistent header field, which is then used to authenticate all API requests.
+You are working on a Single Page Application (SPA) called "CurseForge Explorer" - a tool for browsing and exploring CurseForge content (games, mods, files). The application allows users to enter their CurseForge API key in a persistent header field, which is then used to authenticate all API requests.
 
 ## Tech Stack (Latest Versions)
 - **Framework**: React (latest) with TypeScript
@@ -39,14 +39,14 @@ You are working on a Single Page Application (SPA) called "CourseForge Explorer"
 ### File Organization
 ```
 src/
-├── api/              # API client and CourseForge service layer
+├── api/              # API client and CurseForge service layer
 │   ├── client.ts     # API client factory (accepts API key)
-│   └── courseforge.ts # CourseForge API service definitions
+│   └── curseforge.ts # CurseForge API service definitions
 ├── components/
 │   ├── ui/           # Primitive reusable components (Button, Input, Card, Badge, etc.)
 │   └── layout/       # Layout components (Header with API Key input, Footer)
 ├── features/         # Feature-based components (GamesList, ModDetails, FileBrowser, etc.)
-├── hooks/            # Custom hooks (useApiKey, useCourseForge, useDebounce, etc.)
+├── hooks/            # Custom hooks (useApiKey, useCurseForge, useDebounce, etc.)
 ├── routes/           # TanStack Router file-based routes
 │   ├── __root.tsx    # Root layout route
 │   ├── index.lazy.tsx # Homepage route
@@ -70,7 +70,7 @@ src/
 - API key MUST be stored in a React Context (`store/ApiKeyContext.tsx`)
 - Header component MUST contain a persistent, always-visible input field for the API key
 - API key should be accessible globally throughout the application
-- All CourseForge API calls MUST include the API key in request headers
+- All CurseForge API calls MUST include the API key in request headers
 - Handle API errors gracefully (401 Unauthorized for invalid keys, network errors, etc.)
 
 ### API Service Layer
@@ -81,8 +81,8 @@ src/
 - Define TypeScript interfaces for all API request/response types in `src/types/`
 - Implement proper error handling with TanStack Query's error states
 
-### CourseForge API Integration
-- Base URL: Configure in API client (check CourseForge API documentation)
+### CurseForge API Integration
+- Base URL: Configure in API client (check CurseForge API documentation)
 - Authentication: Include API key in headers (format: `x-api-key` or `Authorization` as per API docs)
 - Endpoints: Organize by resource (games, mods, files)
 - Display all available information from API responses (id, download URLs, metadata, etc.)
@@ -98,7 +98,7 @@ src/
 - Use route params with `$` prefix (e.g., `$gameId.tsx`, `$modId.tsx`)
 
 ### GitHub Pages Configuration
-- Configure base path in `vite.config.ts`: `base: '/courseforge-explorer/'` (or repo name)
+- Configure base path in `vite.config.ts`: `base: '/curseforge-explorer/'` (or repo name)
 - Ensure all routes work correctly with the base path
 - Handle client-side routing properly for GitHub Pages (use hash routing if needed, or configure 404.html)
 
@@ -187,7 +187,7 @@ src/
 // src/api/client.ts
 export const createApiClient = (apiKey: string) => {
   return axios.create({
-    baseURL: 'https://api.courseforge.com/v1',
+    baseURL: 'https://api.curseforge.com/v1',
     headers: {
       'x-api-key': apiKey,
       'Content-Type': 'application/json',
@@ -201,7 +201,7 @@ export const createApiClient = (apiKey: string) => {
 // Use TanStack Query for all data fetching
 const { data, isLoading, error } = useQuery({
   queryKey: ['games', apiKey],
-  queryFn: () => courseforgeApi.getGames(apiKey),
+  queryFn: () => curseforgeApi.getGames(apiKey),
   enabled: !!apiKey, // Only fetch when API key is available
 });
 ```

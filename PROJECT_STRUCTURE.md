@@ -1,11 +1,11 @@
-# CourseForge Explorer - Project Structure
+# CurseForge Explorer - Project Structure
 
-This document describes the expected folder structure and file organization for the CourseForge Explorer project.
+This document describes the expected folder structure and file organization for the CurseForge Explorer project.
 
 ## Root Directory
 
 ```
-courseforge-explorer/
+curseforge-explorer/
 ├── .cursorrules              # Primary AI agent instructions
 ├── .cursor/                  # Additional AI context
 │   └── README.md            # Extended context and patterns
@@ -33,7 +33,7 @@ src/
 │
 ├── api/                      # API client and service layer
 │   ├── client.ts             # API client factory (creates client with API key)
-│   ├── courseforge.ts        # CourseForge API service definitions
+│   ├── curseforge.ts        # CurseForge API service definitions
 │   └── types.ts              # API request/response types
 │
 ├── components/               # React components
@@ -72,12 +72,12 @@ src/
 │
 ├── hooks/                    # Custom React hooks
 │   ├── useApiKey.ts         # Hook to access API key from context
-│   ├── useCourseForgeGames.ts    # Hook for fetching games
-│   ├── useCourseForgeGame.ts     # Hook for fetching single game
-│   ├── useCourseForgeMods.ts     # Hook for fetching mods
-│   ├── useCourseForgeMod.ts      # Hook for fetching single mod
-│   ├── useCourseForgeFiles.ts    # Hook for fetching files
-│   ├── useCourseForgeFile.ts     # Hook for fetching single file
+│   ├── useCurseForgeGames.ts    # Hook for fetching games
+│   ├── useCurseForgeGame.ts     # Hook for fetching single game
+│   ├── useCurseForgeMods.ts     # Hook for fetching mods
+│   ├── useCurseForgeMod.ts      # Hook for fetching single mod
+│   ├── useCurseForgeFiles.ts    # Hook for fetching files
+│   ├── useCurseForgeFile.ts     # Hook for fetching single file
 │   ├── useDebounce.ts       # Debounce utility hook
 │   └── index.ts              # Barrel export
 │
@@ -102,7 +102,7 @@ src/
 │   └── ApiKeyProvider.tsx   # Context provider component
 │
 ├── types/                    # TypeScript type definitions
-│   ├── courseforge.ts       # CourseForge API types
+│   ├── curseforge.ts       # CurseForge API types
 │   ├── common.ts            # Common shared types
 │   └── index.ts             # Barrel export
 │
@@ -130,7 +130,7 @@ src/
 
 #### API Layer (`src/api/`)
 - **`client.ts`**: Factory function that creates an API client instance configured with the user's API key.
-- **`courseforge.ts`**: Service functions for all CourseForge API endpoints (games, mods, files).
+- **`curseforge.ts`**: Service functions for all CurseForge API endpoints (games, mods, files).
 - **`types.ts`**: TypeScript interfaces for API requests and responses.
 
 #### Components (`src/components/`)
@@ -152,7 +152,7 @@ src/
 
 #### Hooks (`src/hooks/`)
 - **`useApiKey.ts`**: Hook to access the API key from ApiKeyContext
-- **`useCourseForge*.ts`**: Custom hooks that wrap TanStack Query for specific API endpoints
+- **`useCurseForge*.ts`**: Custom hooks that wrap TanStack Query for specific API endpoints
 - **`useDebounce.ts`**: Utility hook for debouncing values (useful for search inputs)
 
 #### Routes (`src/routes/`)
@@ -167,7 +167,7 @@ src/
 
 #### Types (`src/types/`)
 - TypeScript type definitions for the application
-- **`courseforge.ts`**: Types for CourseForge API responses
+- **`curseforge.ts`**: Types for CurseForge API responses
 - **`common.ts`**: Shared types used across the application
 
 #### Utils (`src/utils/`)
@@ -179,9 +179,9 @@ src/
 
 ### Files
 - **Components**: PascalCase (e.g., `GamesList.tsx`, `GameCard.tsx`)
-- **Hooks**: camelCase with `use` prefix (e.g., `useApiKey.ts`, `useCourseForgeGames.ts`)
+- **Hooks**: camelCase with `use` prefix (e.g., `useApiKey.ts`, `useCurseForgeGames.ts`)
 - **Utilities**: camelCase (e.g., `cn.ts`, `format.ts`)
-- **Types**: camelCase (e.g., `courseforge.ts`, `common.ts`)
+- **Types**: camelCase (e.g., `curseforge.ts`, `common.ts`)
 - **Routes**: Follow TanStack Router conventions (e.g., `__root.tsx`, `$gameId.tsx`)
 
 ### Directories
@@ -238,7 +238,7 @@ When adding new files:
 1. **Components**: Place in appropriate directory (`ui/` for primitives, `layout/` for layout, `features/` for domain-specific)
 2. **Hooks**: Add to `hooks/` directory, export from `hooks/index.ts`
 3. **Routes**: Follow TanStack Router file-based routing conventions
-4. **API Services**: Add to `api/courseforge.ts` or create new service file if needed
+4. **API Services**: Add to `api/curseforge.ts` or create new service file if needed
 5. **Types**: Add to appropriate file in `types/` directory
 6. **Utils**: Add to `utils/` directory, export from `utils/index.ts`
 

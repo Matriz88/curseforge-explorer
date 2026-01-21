@@ -32,7 +32,7 @@ export const Header = () => {
     <header className="bg-gray-900 text-white p-4 shadow-lg border-b border-gray-800">
       <div className="container mx-auto">
         <div className="flex flex-col md:flex-row gap-4">
-          <h1 className="text-2xl font-bold text-white whitespace-nowrap">CourseForge Explorer</h1>
+          <h1 className="text-2xl font-bold text-white whitespace-nowrap">CurseForge Explorer</h1>
           <div className="flex-1 max-w-2xl">
             <div className="flex gap-2">
             <div className="relative flex-1">

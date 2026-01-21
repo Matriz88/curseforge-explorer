@@ -16,7 +16,7 @@ export interface SearchModsParams {
   pageSize?: number;
 }
 
-export const courseforgeApi = {
+export const curseforgeApi = {
   getGames: async (apiKey: string, params?: GetGamesParams): Promise<PaginatedResponse<Game>> => {
     const client = createApiClient(apiKey);
     const response = await client.get<PaginatedResponse<Game>>('/games', {
