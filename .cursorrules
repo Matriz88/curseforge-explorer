@@ -153,6 +153,42 @@ src/
 - Avoid `any` - use `unknown` if type is truly unknown
 - Use proper generic types for reusable components and hooks
 
+## Code Formatting and Linting
+
+### Prettier (Default Formatter)
+- **Prettier** is the default code formatter for this project
+- All code should be formatted using Prettier
+- Configuration is in `.prettierrc` (exact rules are defined there)
+- Prettier handles code formatting (indentation, quotes, semicolons, line length, etc.)
+
+### ESLint (Code Quality)
+- **ESLint** is used for code quality, React best practices, and TypeScript linting
+- Configuration is in `eslint.config.js` (exact rules are defined there)
+- ESLint plugins include:
+  - React Hooks - enforces React Hooks rules
+  - React Refresh - ensures React Refresh compatibility
+  - TanStack Router - TanStack Router-specific linting rules
+  - TanStack Query - TanStack Query-specific linting rules (query keys, etc.)
+  - TypeScript ESLint - TypeScript-specific linting rules
+- The project uses `eslint-config-prettier` to disable ESLint rules that conflict with Prettier
+
+### Editor Integration
+- Format on save is enabled (uses Prettier automatically)
+- ESLint auto-fix on save is enabled (fixes auto-fixable issues automatically)
+- VSCode settings are configured in `.vscode/settings.json`
+
+### Available Commands
+- `npm run lint` - Check both ESLint and Prettier (does not modify files)
+- `npm run lint:fix` - Auto-fix both ESLint and Prettier issues (modifies files)
+
+### AI Agent Guidelines
+- **Always use Prettier as the default formatter** - code should be formatted according to Prettier rules
+- **Ensure code passes both ESLint and Prettier checks** - run `npm run lint` to verify
+- **Run `npm run lint:fix`** to automatically fix formatting and linting issues when needed
+- **Do not modify configuration files** (`.prettierrc`, `eslint.config.js`) unless explicitly requested
+- **Follow ESLint rules** - especially React Hooks rules, TanStack Query query key requirements, and TypeScript best practices
+- Code should be formatted and linted before committing or when checking code quality
+
 ## Error Handling
 
 ### API Errors

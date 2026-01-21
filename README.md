@@ -53,3 +53,29 @@ Install:
 ```bash
 cd app
 npm install
+```
+
+## Editor Configuration
+
+### VSCode Settings
+
+For the best development experience, we recommend using the following VSCode settings. These are already configured in `.vscode/settings.json` for the workspace, but you can also add them to your user settings:
+
+```json
+{
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "always"
+  }
+}
+```
+
+**What these settings do:**
+- `editor.formatOnSave: true` - Automatically formats code using Prettier when you save a file
+- `editor.defaultFormatter: "esbenp.prettier-vscode"` - Sets Prettier as the default code formatter
+- `editor.codeActionsOnSave.source.fixAll.eslint: "always"` - Automatically fixes ESLint issues on save
+
+**Required Extensions:**
+- [Prettier - Code formatter](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
+- [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
