@@ -23,10 +23,7 @@ export const Pagination = ({
   return (
     <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mt-6 pt-6 border-t border-gray-800">
       {showPageSizeSelector && (
-        <PageSizeSelector
-          pageSize={pageSize}
-          onPageSizeChange={onPageSizeChange}
-        />
+        <PageSizeSelector pageSize={pageSize} onPageSizeChange={onPageSizeChange} />
       )}
       <PaginationControls
         currentPage={currentPage}

@@ -27,7 +27,7 @@ export const curseforgeApi = {
     });
     return response.data;
   },
-  
+
   getGame: async (apiKey: string, gameId: string): Promise<Game> => {
     const client = createApiClient(apiKey);
     const response = await client.get<Game | { data: Game }>(`/games/${gameId}`);
@@ -37,31 +37,31 @@ export const curseforgeApi = {
     }
     return data as Game;
   },
-  
+
   getMods: async (apiKey: string) => {
     const client = createApiClient(apiKey);
     const response = await client.get('/mods');
     return response.data;
   },
-  
+
   getMod: async (apiKey: string, modId: string): Promise<ModDetail> => {
     const client = createApiClient(apiKey);
     const response = await client.get<{ data: ModDetail }>(`/mods/${modId}`);
     return response.data.data;
   },
-  
+
   getFiles: async (apiKey: string) => {
     const client = createApiClient(apiKey);
     const response = await client.get('/files');
     return response.data;
   },
-  
+
   getFile: async (apiKey: string, fileId: string) => {
     const client = createApiClient(apiKey);
     const response = await client.get(`/files/${fileId}`);
     return response.data;
   },
-  
+
   searchMods: async (apiKey: string, params: SearchModsParams): Promise<PaginatedResponse<Mod>> => {
     const client = createApiClient(apiKey);
     const queryParams: Record<string, string | number> = {
@@ -69,7 +69,7 @@ export const curseforgeApi = {
       index: params.index ?? API.DEFAULT_PAGE_INDEX,
       pageSize: params.pageSize ?? API.DEFAULT_PAGE_SIZE,
     };
-    
+
     if (params.searchFilter) {
       queryParams.searchFilter = params.searchFilter;
     }
@@ -79,7 +79,7 @@ export const curseforgeApi = {
     if (params.sortOrder) {
       queryParams.sortOrder = params.sortOrder;
     }
-    
+
     const response = await client.get<PaginatedResponse<Mod>>('/mods/search', {
       params: queryParams,
     });

@@ -13,7 +13,7 @@ export const ModCard = ({ mod }: ModCardProps) => {
   return (
     <Link
       to="/mods/$modId"
-      params={{ modId: String(mod.id) } as any}
+      params={{ modId: String(mod.id) }}
       className="bg-gray-900 rounded-lg shadow-md hover:shadow-xl hover:shadow-blue-500/10 transition-all p-6 border border-gray-800 hover:border-gray-700 cursor-pointer block"
     >
       <div className="flex items-start gap-4">
@@ -30,19 +30,11 @@ export const ModCard = ({ mod }: ModCardProps) => {
         <div className="flex-1 min-w-0">
           <div className="flex flex-col gap-3">
             <div>
-              <h3 className="text-lg font-semibold text-white mb-1 truncate">
-                {mod.name}
-              </h3>
-              {authorNames && (
-                <p className="text-sm text-gray-400 mb-2">
-                  By: {authorNames}
-                </p>
-              )}
+              <h3 className="text-lg font-semibold text-white mb-1 truncate">{mod.name}</h3>
+              {authorNames && <p className="text-sm text-gray-400 mb-2">By: {authorNames}</p>}
             </div>
             {mod.description && (
-              <p className="text-sm text-gray-300 line-clamp-3">
-                {mod.description}
-              </p>
+              <p className="text-sm text-gray-300 line-clamp-3">{mod.description}</p>
             )}
             <div className="flex flex-wrap gap-2 text-xs text-gray-400">
               <span>ID: {mod.id}</span>

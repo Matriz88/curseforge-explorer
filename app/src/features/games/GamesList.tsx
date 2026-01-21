@@ -47,9 +47,7 @@ export const GamesList = () => {
           <p className="text-red-300">
             {error instanceof Error ? error.message : 'An unknown error occurred'}
           </p>
-          <p className="text-sm text-red-400 mt-2">
-            Please check your API key and try again.
-          </p>
+          <p className="text-sm text-red-400 mt-2">Please check your API key and try again.</p>
         </div>
       </div>
     );

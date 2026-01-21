@@ -6,7 +6,7 @@ interface GameCardProps {
 }
 
 export const GameCard = ({ game }: GameCardProps) => {
-  const imageUrl = game.assets?.iconUrl ?? game.assets?.tileUrl ?? game.assets?.coverUrl
+  const imageUrl = game.assets?.iconUrl ?? game.assets?.tileUrl ?? game.assets?.coverUrl;
 
   return (
     <Link
@@ -26,17 +26,11 @@ export const GameCard = ({ game }: GameCardProps) => {
           />
         )}
         <div className="flex-1 min-w-0">
-          <h3 className="text-lg font-semibold text-white mb-1 truncate">
-            {game.name}
-          </h3>
+          <h3 className="text-lg font-semibold text-white mb-1 truncate">{game.name}</h3>
           <div className="flex flex-wrap gap-2 text-sm text-gray-400">
             <span>ID: {game.id}</span>
-            {game.slug && (
-              <span className="text-gray-600">•</span>
-            )}
-            {game.slug && (
-              <span className="truncate">Slug: {game.slug}</span>
-            )}
+            {game.slug && <span className="text-gray-600">•</span>}
+            {game.slug && <span className="truncate">Slug: {game.slug}</span>}
           </div>
           {game.dateModified && (
             <p className="text-xs text-gray-500 mt-2">

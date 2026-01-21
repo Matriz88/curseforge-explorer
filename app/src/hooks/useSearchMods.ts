@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { useApiKey } from './useApiKey';
-import { curseforgeApi } from '../api/curseforge';
+import { curseforgeApi } from '../api/courseforge';
 import type { PaginatedResponse, Mod } from '../api/types';
 import { API } from '../config/constants';
 
@@ -19,15 +19,26 @@ export const useSearchMods = (params: UseSearchModsParams) => {
   const pageSize = params.pageSize ?? API.DEFAULT_PAGE_SIZE;
 
   return useQuery<PaginatedResponse<Mod>, Error>({
-    queryKey: ['mods', 'search', apiKey, params.gameId, params.searchFilter, params.sortField, params.sortOrder],
-    queryFn: () => curseforgeApi.searchMods(apiKey, {
-      gameId: params.gameId,
-      searchFilter: params.searchFilter,
-      sortField: params.sortField,
-      sortOrder: params.sortOrder,
+    queryKey: [
+      'mods',
+      'search',
+      apiKey,
+      params.gameId,
+      params.searchFilter,
+      params.sortField,
+      params.sortOrder,
       index,
       pageSize,
-    }),
+    ],
+    queryFn: () =>
+      curseforgeApi.searchMods(apiKey, {
+        gameId: params.gameId,
+        searchFilter: params.searchFilter,
+        sortField: params.sortField,
+        sortOrder: params.sortOrder,
+        index,
+        pageSize,
+      }),
     enabled: !!apiKey && apiKey.length > 0 && !!params.gameId,
     staleTime: 1000 * 60 * 5, // 5 minutes
     retry: 1,

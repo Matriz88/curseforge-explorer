@@ -3,9 +3,7 @@ export const ApiKeyGuide = () => {
     <div className="container mx-auto px-4 py-8">
       <div className="max-w-3xl mx-auto">
         <div className="bg-gray-900 rounded-lg shadow-md border border-gray-800 p-8">
-          <h2 className="text-2xl font-bold text-white mb-6">
-            How to Get Your CurseForge API Key
-          </h2>
+          <h2 className="text-2xl font-bold text-white mb-6">How to Get Your CurseForge API Key</h2>
 
           <div className="space-y-6">
             <div className="flex gap-4">
@@ -33,7 +31,8 @@ export const ApiKeyGuide = () => {
               </div>
               <div className="flex-1">
                 <p className="text-gray-300">
-                  Create a new organization by entering a name, or skip this step if you already have one
+                  Create a new organization by entering a name, or skip this step if you already
+                  have one
                 </p>
               </div>
             </div>
@@ -43,9 +42,7 @@ export const ApiKeyGuide = () => {
                 3
               </div>
               <div className="flex-1">
-                <p className="text-gray-300">
-                  Open the API keys section in the console
-                </p>
+                <p className="text-gray-300">Open the API keys section in the console</p>
               </div>
             </div>
 
@@ -54,26 +51,24 @@ export const ApiKeyGuide = () => {
                 4
               </div>
               <div className="flex-1">
-                <p className="text-gray-300 mb-4">
-                  Copy the API key value from the console
-                </p>
-</div>
-</div>
+                <p className="text-gray-300 mb-4">Copy the API key value from the console</p>
+              </div>
+            </div>
 
-<div className="flex gap-4">
-<div className="flex-1">
-<div className="mt-4">
-  <a
-    href="/curseforge-explorer/api-keys-screenshot.png"
-    target="_blank"
-    rel="noopener noreferrer"
-    className="block cursor-pointer"
-  >
-    <img
-      src="/curseforge-explorer/api-keys-screenshot.png"
-        alt="CurseForge API Keys section screenshot"
-              className="w-full max-w-2xl rounded border border-gray-700 hover:border-gray-600 transition-colors cursor-pointer"
-              onError={(e) => {
+            <div className="flex gap-4">
+              <div className="flex-1">
+                <div className="mt-4">
+                  <a
+                    href="/curseforge-explorer/api-keys-screenshot.png"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block cursor-pointer"
+                  >
+                    <img
+                      src="/curseforge-explorer/api-keys-screenshot.png"
+                      alt="CurseForge API Keys section screenshot"
+                      className="w-full max-w-2xl rounded border border-gray-700 hover:border-gray-600 transition-colors cursor-pointer"
+                      onError={(e) => {
                         e.currentTarget.style.display = 'none';
                       }}
                     />
@@ -85,7 +80,8 @@ export const ApiKeyGuide = () => {
 
           <div className="mt-8 pt-6 border-t border-gray-800">
             <p className="text-sm text-gray-400">
-              Once you have your API key, paste it in the header field above to start exploring CurseForge content.
+              Once you have your API key, paste it in the header field above to start exploring
+              CurseForge content.
             </p>
           </div>
         </div>

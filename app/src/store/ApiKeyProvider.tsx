@@ -30,9 +30,5 @@ export const ApiKeyProvider = ({ children }: ApiKeyProviderProps) => {
     }
   }, [apiKey]);
 
-  return (
-    <ApiKeyContext.Provider value={{ apiKey, setApiKey }}>
-      {children}
-    </ApiKeyContext.Provider>
-  );
+  return <ApiKeyContext.Provider value={{ apiKey, setApiKey }}>{children}</ApiKeyContext.Provider>;
 };

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -11,12 +11,12 @@
       var path = window.location.pathname;
       var search = window.location.search;
       var hash = window.location.hash;
-      
+
       // Remove base path from pathname
       if (path.startsWith(basePath)) {
         path = path.slice(basePath.length);
       }
-      
+
       // Redirect to index.html with the path as a query parameter
       // TanStack Router will handle the routing
       var redirectPath = basePath + '/index.html';
@@ -30,7 +30,7 @@
         redirectPath += '&' + search.slice(1);
       }
       redirectPath += hash;
-      
+
       window.location.replace(redirectPath);
     </script>
   </head>

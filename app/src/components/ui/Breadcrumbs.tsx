@@ -24,7 +24,7 @@ export const Breadcrumbs = ({ items }: BreadcrumbsProps) => {
             {item.to ? (
               <Link
                 to={item.to}
-                params={item.params as any}
+                {...(item.params && { params: item.params })}
                 className="text-blue-400 hover:text-blue-300 cursor-pointer transition-colors"
               >
                 {item.label}

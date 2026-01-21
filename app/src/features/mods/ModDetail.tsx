@@ -129,7 +129,7 @@ export const ModDetail = ({ modId }: ModDetailProps) => {
           <li>
             <Link
               to="/games/$gameId"
-              params={{ gameId: String(mod.gameId) } as any}
+              params={{ gameId: String(mod.gameId) }}
               className="text-blue-400 hover:text-blue-300 cursor-pointer transition-colors"
             >
               Search Mod
@@ -306,7 +306,7 @@ export const ModDetail = ({ modId }: ModDetailProps) => {
                 className="relative cursor-pointer"
                 onClick={() =>
                   setExpandedScreenshot(
-                    expandedScreenshot === screenshot.id ? null : screenshot.id ?? null
+                    expandedScreenshot === screenshot.id ? null : (screenshot.id ?? null)
                   )
                 }
               >
@@ -325,10 +325,7 @@ export const ModDetail = ({ modId }: ModDetailProps) => {
                     className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4 cursor-pointer"
                     onClick={() => setExpandedScreenshot(null)}
                   >
-                    <div
-                      className="max-w-4xl max-h-full"
-                      onClick={(e) => e.stopPropagation()}
-                    >
+                    <div className="max-w-4xl max-h-full" onClick={(e) => e.stopPropagation()}>
                       <img
                         src={screenshot.url}
                         alt={screenshot.title ?? 'Screenshot'}
@@ -368,7 +365,9 @@ export const ModDetail = ({ modId }: ModDetailProps) => {
                   <tr key={file.id} className="border-b border-gray-800/50 hover:bg-gray-800/30">
                     <td className="py-3 px-3">
                       <div>
-                        <div className="text-white font-medium">{file.displayName ?? file.fileName}</div>
+                        <div className="text-white font-medium">
+                          {file.displayName ?? file.fileName}
+                        </div>
                         {file.fileName && file.fileName !== file.displayName && (
                           <div className="text-xs text-gray-500">{file.fileName}</div>
                         )}
@@ -392,15 +391,11 @@ export const ModDetail = ({ modId }: ModDetailProps) => {
                         'N/A'
                       )}
                     </td>
-                    <td className="py-3 px-3 text-gray-300">
-                      {formatFileSize(file.fileLength)}
-                    </td>
+                    <td className="py-3 px-3 text-gray-300">{formatFileSize(file.fileLength)}</td>
                     <td className="py-3 px-3 text-gray-300">
                       {file.downloadCount?.toLocaleString() ?? '0'}
                     </td>
-                    <td className="py-3 px-3 text-gray-300">
-                      {formatDate(file.fileDate)}
-                    </td>
+                    <td className="py-3 px-3 text-gray-300">{formatDate(file.fileDate)}</td>
                     <td className="py-3 px-3">
                       {file.downloadUrl && (
                         <a
@@ -569,7 +564,9 @@ export const ModDetail = ({ modId }: ModDetailProps) => {
                         {file.fileSizeOnDisk !== undefined && (
                           <div>
                             <span className="text-gray-300">Size on Disk:</span>{' '}
-                            <span className="text-white">{formatFileSize(file.fileSizeOnDisk)}</span>
+                            <span className="text-white">
+                              {formatFileSize(file.fileSizeOnDisk)}
+                            </span>
                           </div>
                         )}
                         {file.hashes && file.hashes.length > 0 && (
@@ -577,7 +574,10 @@ export const ModDetail = ({ modId }: ModDetailProps) => {
                             <span className="text-gray-300 font-medium">Hashes:</span>
                             <div className="mt-2 space-y-2">
                               {file.hashes.map((hash, idx) => (
-                                <div key={idx} className="text-xs font-mono bg-gray-900 rounded p-2 border border-gray-700">
+                                <div
+                                  key={idx}
+                                  className="text-xs font-mono bg-gray-900 rounded p-2 border border-gray-700"
+                                >
                                   <span className="text-gray-300">
                                     {hash.algo === 1 ? 'MD5' : hash.algo === 2 ? 'SHA1' : 'Hash'}:
                                   </span>{' '}
@@ -593,7 +593,8 @@ export const ModDetail = ({ modId }: ModDetailProps) => {
                             <div className="mt-2 space-y-1">
                               {file.dependencies.map((dep, idx) => (
                                 <div key={idx} className="text-xs text-gray-200">
-                                  Mod ID: <span className="text-white font-medium">{dep.modId}</span>, Type:{' '}
+                                  Mod ID:{' '}
+                                  <span className="text-white font-medium">{dep.modId}</span>, Type:{' '}
                                   <span className="text-white font-medium">{dep.relationType}</span>
                                 </div>
                               ))}
@@ -607,7 +608,9 @@ export const ModDetail = ({ modId }: ModDetailProps) => {
                               {file.modules.map((module, idx) => (
                                 <div key={idx} className="text-xs text-gray-200">
                                   <span className="text-white font-medium">{module.name}</span>{' '}
-                                  (Fingerprint: <span className="text-white font-mono">{module.fingerprint}</span>)
+                                  (Fingerprint:{' '}
+                                  <span className="text-white font-mono">{module.fingerprint}</span>
+                                  )
                                 </div>
                               ))}
                             </div>

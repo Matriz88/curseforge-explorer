@@ -29,12 +29,22 @@ export const GameDetail = ({ gameId }: GameDetailProps) => {
   const [activeSearchFilter, setActiveSearchFilter] = useState<string | undefined>(undefined);
   const [sortField, setSortField] = useState<number>(SortField.Featured);
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
-  
+
   const numericGameId = parseInt(gameId, 10);
 
-  const { data: game, isLoading: isLoadingGame, isError: isErrorGame, error: gameError } = useCurseForgeGame(gameId);
-  
-  const { data: modsData, isLoading: isLoadingMods, isError: isErrorMods, error: modsError } = useSearchMods({
+  const {
+    data: game,
+    isLoading: isLoadingGame,
+    isError: isErrorGame,
+    error: gameError,
+  } = useCurseForgeGame(gameId);
+
+  const {
+    data: modsData,
+    isLoading: isLoadingMods,
+    isError: isErrorMods,
+    error: modsError,
+  } = useSearchMods({
     gameId: numericGameId,
     searchFilter: activeSearchFilter,
     sortField,
@@ -146,7 +156,7 @@ export const GameDetail = ({ gameId }: GameDetailProps) => {
 
         <div className="bg-gray-900 rounded-lg p-6 border border-gray-800">
           <h2 className="text-xl font-semibold text-white mb-4">Search Mods</h2>
-          
+
           <div className="flex flex-col md:flex-row gap-4 mb-4">
             <div className="flex-1 relative">
               <input
@@ -165,12 +175,17 @@ export const GameDetail = ({ gameId }: GameDetailProps) => {
                   aria-label="Clear search"
                 >
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
                   </svg>
                 </button>
               )}
             </div>
-            
+
             <button
               type="button"
               onClick={handleSearch}
@@ -178,7 +193,7 @@ export const GameDetail = ({ gameId }: GameDetailProps) => {
             >
               Search
             </button>
-            
+
             <select
               value={sortField}
               onChange={(e) => setSortField(Number(e.target.value))}
@@ -190,7 +205,7 @@ export const GameDetail = ({ gameId }: GameDetailProps) => {
                 </option>
               ))}
             </select>
-            
+
             <select
               value={sortOrder}
               onChange={(e) => setSortOrder(e.target.value as 'asc' | 'desc')}

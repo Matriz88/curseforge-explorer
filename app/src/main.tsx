@@ -16,7 +16,7 @@ const queryClient = new QueryClient({
   },
 });
 
-const router = createRouter({ 
+const router = createRouter({
   routeTree,
   basepath: import.meta.env.BASE_URL,
 });
@@ -32,5 +32,5 @@ createRoot(document.getElementById('root')!).render(
     <QueryClientProvider client={queryClient}>
       <RouterProvider router={router} />
     </QueryClientProvider>
-  </StrictMode>,
+  </StrictMode>
 );
