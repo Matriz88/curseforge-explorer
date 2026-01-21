@@ -128,7 +128,6 @@ export const ModDetail = ({ modId }: ModDetailProps) => {
           </li>
           <li>
             <Link
-              // @ts-expect-error - Route will be available after route tree regeneration
               to="/games/$gameId"
               params={{ gameId: String(mod.gameId) } as any}
               className="text-blue-400 hover:text-blue-300 cursor-pointer transition-colors"

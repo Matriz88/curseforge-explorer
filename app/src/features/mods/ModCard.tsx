@@ -12,7 +12,6 @@ export const ModCard = ({ mod }: ModCardProps) => {
 
   return (
     <Link
-      // @ts-expect-error - Route will be available after route tree regeneration
       to="/mods/$modId"
       params={{ modId: String(mod.id) } as any}
       className="bg-gray-900 rounded-lg shadow-md hover:shadow-xl hover:shadow-blue-500/10 transition-all p-6 border border-gray-800 hover:border-gray-700 cursor-pointer block"

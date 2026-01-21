@@ -23,7 +23,6 @@ export const Breadcrumbs = ({ items }: BreadcrumbsProps) => {
             )}
             {item.to ? (
               <Link
-                // @ts-expect-error - Route will be available after route tree regeneration
                 to={item.to}
                 params={item.params as any}
                 className="text-blue-400 hover:text-blue-300 cursor-pointer transition-colors"
