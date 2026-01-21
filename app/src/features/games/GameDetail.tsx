@@ -115,166 +115,184 @@ export const GameDetail = ({ gameId }: GameDetailProps) => {
   }
 
   const imageUrl = game.assets?.iconUrl ?? game.assets?.tileUrl ?? game.assets?.coverUrl;
+  const coverUrl = game.assets?.coverUrl;
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <Breadcrumbs items={[{ label: 'Home', to: '/' }, { label: game?.name || 'Loading...' }]} />
-
-      <div className="mb-8">
-        <div className="flex items-start gap-4 mb-6">
-          {imageUrl && (
+    <>
+      {coverUrl && (
+        <div className="w-full mb-6">
+          <div className="relative w-full h-48 md:h-64 lg:h-80 overflow-hidden">
             <img
-              src={imageUrl}
-              alt={game.name}
-              className="w-24 h-24 object-cover rounded shrink-0 border border-gray-800"
+              src={coverUrl}
+              alt={`${game.name} cover`}
+              className="w-full h-full object-cover"
               onError={(e) => {
                 e.currentTarget.style.display = 'none';
               }}
             />
-          )}
-          <div className="flex-1">
-            <h1 className="text-3xl font-bold text-white mb-2">{game.name}</h1>
-            <div className="flex flex-wrap gap-2 text-sm text-gray-400">
-              <span>ID: {game.id}</span>
-              {game.slug && (
-                <>
-                  <span className="text-gray-600">•</span>
-                  <span>Slug: {game.slug}</span>
-                </>
-              )}
-            </div>
+            <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/50 to-transparent" />
           </div>
         </div>
-
-        <div className="bg-gray-900 rounded-lg p-6 border border-gray-800">
-          <h2 className="text-xl font-semibold text-white mb-4">Search Mods</h2>
-
-          <div className="flex flex-col md:flex-row gap-4 mb-4">
-            <div className="flex-1 relative">
-              <input
-                type="text"
-                placeholder="Search by mod name, author, or both..."
-                value={searchFilter}
-                onChange={(e) => setSearchFilter(e.target.value)}
-                onKeyPress={handleKeyPress}
-                className="w-full px-4 py-2 rounded bg-gray-800 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 border border-gray-700 focus:border-blue-500 transition-colors"
-              />
-              {searchFilter && (
-                <button
-                  type="button"
-                  onClick={handleClearSearch}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white cursor-pointer transition-colors"
-                  aria-label="Clear search"
-                >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M6 18L18 6M6 6l12 12"
-                    />
-                  </svg>
-                </button>
-              )}
-            </div>
-
-            <button
-              type="button"
-              onClick={handleSearch}
-              className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded font-medium transition-colors cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-900"
-            >
-              Search
-            </button>
-
-            <select
-              value={sortField}
-              onChange={(e) => setSortField(Number(e.target.value))}
-              className="px-4 py-2 rounded bg-gray-800 text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors cursor-pointer"
-            >
-              {SORT_FIELD_OPTIONS.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
-
-            <select
-              value={sortOrder}
-              onChange={(e) => setSortOrder(e.target.value as 'asc' | 'desc')}
-              className="px-4 py-2 rounded bg-gray-800 text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors cursor-pointer"
-            >
-              <option value="desc">Descending</option>
-              <option value="asc">Ascending</option>
-            </select>
-          </div>
-        </div>
-      </div>
-
-      {hasActiveSearch ? (
-        <>
-          {isLoadingMods ? (
-            <div className="flex items-center justify-center min-h-[400px]">
-              <div className="text-center">
-                <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mb-4"></div>
-                <p className="text-gray-400">Searching mods...</p>
-              </div>
-            </div>
-          ) : isErrorMods ? (
-            <div className="bg-red-950/50 border border-red-800/50 rounded-lg p-6">
-              <h2 className="text-lg font-semibold text-red-400 mb-2">Error searching mods</h2>
-              <p className="text-red-300">
-                {modsError instanceof Error ? modsError.message : 'An unknown error occurred'}
-              </p>
-            </div>
-          ) : modsData && modsData.data.length === 0 ? (
-            <div className="text-center py-12">
-              <p className="text-gray-400 text-lg">No mods found matching your search</p>
-            </div>
-          ) : (
-            <>
-              {modsData && modsData.pagination && (
-                <div className="mb-4 text-sm text-gray-400">
-                  Showing {modsData.data.length} of {modsData.pagination.totalCount} mods
-                </div>
-              )}
-              <ModsList mods={modsData?.data ?? []} />
-            </>
-          )}
-        </>
-      ) : (
-        <>
-          {isLoadingFeaturedMods ? (
-            <div className="flex items-center justify-center min-h-[400px]">
-              <div className="text-center">
-                <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mb-4"></div>
-                <p className="text-gray-400">Loading featured/popular mods...</p>
-              </div>
-            </div>
-          ) : isErrorFeaturedMods ? (
-            <div className="bg-red-950/50 border border-red-800/50 rounded-lg p-6">
-              <h2 className="text-lg font-semibold text-red-400 mb-2">
-                Error loading featured/popular mods
-              </h2>
-              <p className="text-red-300">
-                {featuredModsError instanceof Error
-                  ? featuredModsError.message
-                  : 'An unknown error occurred'}
-              </p>
-            </div>
-          ) : featuredMods && featuredMods.length === 0 ? (
-            <div className="text-center py-12">
-              <p className="text-gray-400 text-lg">No featured/popular mods available</p>
-            </div>
-          ) : (
-            <>
-              <div className="mb-4 text-sm text-gray-400">
-                Showing {featuredMods?.length ?? 0} featured/popular mods
-              </div>
-              <ModsList mods={featuredMods ?? []} />
-            </>
-          )}
-        </>
       )}
-    </div>
+      <div className="container mx-auto px-4 py-8">
+        <Breadcrumbs items={[{ label: 'Home', to: '/' }, { label: game?.name || 'Loading...' }]} />
+
+        <div className="mb-8">
+          <div className="flex items-start gap-4 mb-6">
+            {imageUrl && (
+              <img
+                src={imageUrl}
+                alt={game.name}
+                className="w-24 h-24 object-cover rounded shrink-0 border border-gray-800"
+                onError={(e) => {
+                  e.currentTarget.style.display = 'none';
+                }}
+              />
+            )}
+            <div className="flex-1">
+              <h1 className="text-3xl font-bold text-white mb-2">{game.name}</h1>
+              <div className="flex flex-wrap gap-2 text-sm text-gray-400">
+                <span>ID: {game.id}</span>
+                {game.slug && (
+                  <>
+                    <span className="text-gray-600">•</span>
+                    <span>Slug: {game.slug}</span>
+                  </>
+                )}
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-gray-900 rounded-lg p-6 border border-gray-800">
+            <h2 className="text-xl font-semibold text-white mb-4">Search Mods</h2>
+
+            <div className="flex flex-col md:flex-row gap-4 mb-4">
+              <div className="flex-1 relative">
+                <input
+                  type="text"
+                  placeholder="Search by mod name, author, or both..."
+                  value={searchFilter}
+                  onChange={(e) => setSearchFilter(e.target.value)}
+                  onKeyPress={handleKeyPress}
+                  className="w-full px-4 py-2 rounded bg-gray-800 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 border border-gray-700 focus:border-blue-500 transition-colors"
+                />
+                {searchFilter && (
+                  <button
+                    type="button"
+                    onClick={handleClearSearch}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white cursor-pointer transition-colors"
+                    aria-label="Clear search"
+                  >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M6 18L18 6M6 6l12 12"
+                      />
+                    </svg>
+                  </button>
+                )}
+              </div>
+
+              <button
+                type="button"
+                onClick={handleSearch}
+                className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded font-medium transition-colors cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-900"
+              >
+                Search
+              </button>
+
+              <select
+                value={sortField}
+                onChange={(e) => setSortField(Number(e.target.value))}
+                className="px-4 py-2 rounded bg-gray-800 text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors cursor-pointer"
+              >
+                {SORT_FIELD_OPTIONS.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+
+              <select
+                value={sortOrder}
+                onChange={(e) => setSortOrder(e.target.value as 'asc' | 'desc')}
+                className="px-4 py-2 rounded bg-gray-800 text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors cursor-pointer"
+              >
+                <option value="desc">Descending</option>
+                <option value="asc">Ascending</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        {hasActiveSearch ? (
+          <>
+            {isLoadingMods ? (
+              <div className="flex items-center justify-center min-h-[400px]">
+                <div className="text-center">
+                  <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mb-4"></div>
+                  <p className="text-gray-400">Searching mods...</p>
+                </div>
+              </div>
+            ) : isErrorMods ? (
+              <div className="bg-red-950/50 border border-red-800/50 rounded-lg p-6">
+                <h2 className="text-lg font-semibold text-red-400 mb-2">Error searching mods</h2>
+                <p className="text-red-300">
+                  {modsError instanceof Error ? modsError.message : 'An unknown error occurred'}
+                </p>
+              </div>
+            ) : modsData && modsData.data.length === 0 ? (
+              <div className="text-center py-12">
+                <p className="text-gray-400 text-lg">No mods found matching your search</p>
+              </div>
+            ) : (
+              <>
+                {modsData && modsData.pagination && (
+                  <div className="mb-4 text-sm text-gray-400">
+                    Showing {modsData.data.length} of {modsData.pagination.totalCount} mods
+                  </div>
+                )}
+                <ModsList mods={modsData?.data ?? []} />
+              </>
+            )}
+          </>
+        ) : (
+          <>
+            {isLoadingFeaturedMods ? (
+              <div className="flex items-center justify-center min-h-[400px]">
+                <div className="text-center">
+                  <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mb-4"></div>
+                  <p className="text-gray-400">Loading featured/popular mods...</p>
+                </div>
+              </div>
+            ) : isErrorFeaturedMods ? (
+              <div className="bg-red-950/50 border border-red-800/50 rounded-lg p-6">
+                <h2 className="text-lg font-semibold text-red-400 mb-2">
+                  Error loading featured/popular mods
+                </h2>
+                <p className="text-red-300">
+                  {featuredModsError instanceof Error
+                    ? featuredModsError.message
+                    : 'An unknown error occurred'}
+                </p>
+              </div>
+            ) : featuredMods && featuredMods.length === 0 ? (
+              <div className="text-center py-12">
+                <p className="text-gray-400 text-lg">No featured/popular mods available</p>
+              </div>
+            ) : (
+              <>
+                <div className="mb-4 text-sm text-gray-400">
+                  Showing {featuredMods?.length ?? 0} featured/popular mods
+                </div>
+                <ModsList mods={featuredMods ?? []} />
+              </>
+            )}
+          </>
+        )}
+      </div>
+    </>
   );
 };
