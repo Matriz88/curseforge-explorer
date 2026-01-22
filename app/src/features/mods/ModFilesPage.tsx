@@ -34,9 +34,7 @@ export const ModFilesPage = ({
 
   const pageSize = initialPageSize !== undefined ? initialPageSize : internalState.pageSize;
   const currentPage =
-    initialIndex !== undefined
-      ? Math.floor(initialIndex / pageSize)
-      : internalState.currentPage;
+    initialIndex !== undefined ? Math.floor(initialIndex / pageSize) : internalState.currentPage;
   const apiIndex = currentPage * pageSize;
 
   const { data: mod, isLoading: isLoadingMod } = useCurseForgeMod(modId);

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useSearchMods } from '../../hooks/useSearchMods';
 import { useCurseForgeGame } from '../../hooks/useCurseForgeGame';
 import { Breadcrumbs } from '../../components/ui/Breadcrumbs';
@@ -60,11 +60,23 @@ export const GameDetail = ({ gameId }: GameDetailProps) => {
 
   const handleSearch = () => {
     setActiveSearchFilter(searchFilter.trim());
+    setCurrentPage(PAGINATION.DEFAULT_PAGE_INDEX);
   };
 
   const handleClearSearch = () => {
     setSearchFilter('');
     setActiveSearchFilter('');
+    setCurrentPage(PAGINATION.DEFAULT_PAGE_INDEX);
+  };
+
+  const handleSortFieldChange = (newSortField: number) => {
+    setSortField(newSortField);
+    setCurrentPage(PAGINATION.DEFAULT_PAGE_INDEX);
+  };
+
+  const handleSortOrderChange = (newSortOrder: 'asc' | 'desc') => {
+    setSortOrder(newSortOrder);
+    setCurrentPage(PAGINATION.DEFAULT_PAGE_INDEX);
   };
 
   const handlePageChange = (newPage: number) => {
@@ -83,10 +95,6 @@ export const GameDetail = ({ gameId }: GameDetailProps) => {
       handleSearch();
     }
   };
-
-  useEffect(() => {
-    setCurrentPage(PAGINATION.DEFAULT_PAGE_INDEX);
-  }, [activeSearchFilter, sortField, sortOrder]);
 
   if (isLoadingGame) {
     return (
@@ -218,7 +226,7 @@ export const GameDetail = ({ gameId }: GameDetailProps) => {
 
               <select
                 value={sortField}
-                onChange={(e) => setSortField(Number(e.target.value))}
+                onChange={(e) => handleSortFieldChange(Number(e.target.value))}
                 className="px-4 py-2 rounded bg-gray-800 text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors cursor-pointer"
               >
                 {SORT_FIELD_OPTIONS.map((option) => (
@@ -230,7 +238,7 @@ export const GameDetail = ({ gameId }: GameDetailProps) => {
 
               <select
                 value={sortOrder}
-                onChange={(e) => setSortOrder(e.target.value as 'asc' | 'desc')}
+                onChange={(e) => handleSortOrderChange(e.target.value as 'asc' | 'desc')}
                 className="px-4 py-2 rounded bg-gray-800 text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors cursor-pointer"
               >
                 <option value="desc">Descending</option>
